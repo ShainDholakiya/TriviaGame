@@ -1,86 +1,104 @@
-var myQuestions = [
+$(document).ready(function () {
+
+//User clicks button to have the quiz application pop up using jquery
+$('button').click(function(){
+	$(this).hide();
+  
+  var correct;
+  var incorrect;
+  var unanswered;
+  var questionNumber;
+
+  
+  var myQuestions = [
+  //Question 1
 	{
-		question: "What is 10/2?",
-		answers: {
-			a: '3',
-			b: '5',
-			c: '115'
-		},
-		Correctanswer: 'b'
+	  'answer': 'b',
+	  'question': 'What is Apple\'s most lucrative product of 2015?',
+	  'options': ['Iphone', 'Apple Watch', 'Ipad']
+  
 	},
+  
+  //Question 2  
 	{
-		question: "What is 30/3?",
-		answers: {
-			a: '3',
-			b: '5',
-			c: '10'
-		},
-		Correctanswer: 'c'
-	}
-];
-function generateQuiz(questions, quizContainer, resultsContainer, submitButton){
+	  'answer': 'a',
+	  'question': 'Who invented the tablet?',
+	  'options': ['Microsoft', 'Google', 'Apple']
+  
+	},
+  
+  //Question 3
+	{
+	  'answer': 'b',
+	  'question': 'In 1999 who created the first mp3 phone?',
+	  'options': ['Toshiba', 'Samsung', 'Sony']
+  
+	},  
+  
+  //Question 4
+  {
+	'answer': 'a',
+	'question': 'Which tech company released The Walkman?',
+	'options': ['Sony', 'Samsung', 'Toshiba']
+  
+  },
+  
+  //Question 5
+  {
+	'answer': 'b',
+	'question': 'Which company created the "slide to unlock" on smartphones?',
+	'options': ['Apple', 'Microsoft', 'Google']
+  
+  },
+  
+  //Question 6
+  {
+	'answer': 'c',
+	'question': 'Who invented the holographic computer known as the HoloLens?',
+	'options': ['Google', 'Apple', 'Microsoft']
+  
+  },
+  
+  //Question 7
+  {
+	'answer': 'c',
+	'question': 'NAND Flash Memory was created by which tech company?',
+	'options': ['Sony', 'Samsung', 'Toshiba']
+  
+  },   
+  
+  //Question 8
+  {
+	'answer': 'b',
+	'question': 'Who first invented RDF Site Summary (RSS)?',
+	'options': ['Lycos', 'Netscape', 'Yahoo']
+  
+  },
+  
+  //Question 9
+  {
+	'answer': 'b',
+	'question': 'Which company released their TV Product first?',
+	'options': ['Roku', 'Apple TV', 'Chromecast']
+  
+  },  
+  
+  //Question 10
+  {
+	'answer': 'b',
+	'question': 'Who created the first Motion Controller?',
+	'options': ['Nintendo', 'Microsoft', 'Sony']
+  
+  }  
+  
+  ];
 
-	function showQuestions(questions, quizContainer){
-		var output = [];
-		var answers;
-
-	// for each question...
-	for(var i=0; i<questions.length; i++){
-		
-		// first reset the list of answers
-		answers = [];
-
-		// for each available answer to this question...
-		for(letter in questions[i].answers){
-
-			// ...add an html radio button
-			answers.push(
-				'<label>'
-					+ '<input type="radio" name="question'+i+'" value="'+letter+'">'
-					+ letter + ': '
-					+ questions[i].answers[letter]
-				+ '</label>'
-			);
+function startGame(questions) {
+	for (var i = 0; i < questions.length; i++) {
+		$("#questions").append("<p>" + questions[i].question + "</p>");
 		}
-
-		// add this question and its answers to the output
-		output.push(
-			'<div class="question">' + questions[i].question + '</div>'
-			+ '<div class="answers">' + answers.join('') + '</div>'
-		);
 	}
+	startGame(myQuestions);
+});
 
-	// finally combine our output list into one string of html and put it on the page
-	quizContainer.innerHTML = output.join('');
-}
-
-showQuestions(questions, quizContainer);
-
-	function showResults(questions, quizContainer, resultsContainer){
-		var answerContainers = quizContainer.querySelectorAll('.answers');
-	
-	// keep track of user's answers
-	var userAnswer = '';
-	var numCorrect = 0;
-	
-	// for each question...
-	for(var i=0; i<questions.length; i++){
-
-		// find selected answer
-		userAnswer = (answerContainers[i].querySelector('input[name=question'+i+']:checked')||{}).value;
-		
-		// if answer is correct
-		if(userAnswer===questions[i].correctAnswer){
-			// add to the number of correct answers
-			numCorrect++; 
-		}
-		else {
-			
-		}
-	
-
-	// when user clicks submit, show results
-	submitButton.onclick = function(){
-		showResults(questions, quizContainer, resultsContainer);
-	}
-}
+});
