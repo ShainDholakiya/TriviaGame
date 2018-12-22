@@ -62,7 +62,7 @@ function wait() {
 	if (questionCounter < 9) {
 		questionCounter++;
 		generateQuestions();
-		counter = 10;
+		counter = 30;
 		timerWrapper();
 	}
 	else {
@@ -71,7 +71,7 @@ function wait() {
 }
 
 function timerWrapper() {
-	theClock = setInterval(tenSeconds, 3000);
+	theClock = setInterval(thirtySeconds, 3000);
 	function thirtySeconds() {
 		if (counter === 0) {
 			clearInterval(theClock);
@@ -95,14 +95,14 @@ function resetGame() {
 	correctTally = 0;
 	incorrectTally = 0;
 	unansweredTally = 0;
-	counter = 10;
+	counter = 30;
 	generateQuestions();
 	timerWrapper();
 }
 
 var openScreen;
 var gameHTML;
-var counter = 10;
+var counter = 30;
 var questionArray =
 	["What is Apple\'s most lucrative product of 2015?",
 		"Who invented the tablet?",
