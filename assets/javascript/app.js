@@ -62,7 +62,7 @@ function wait() {
 	if (questionCounter < 9) {
 		questionCounter++;
 		generateQuestions();
-		counter = 30;
+		counter = 10;
 		timerWrapper();
 	}
 	else {
@@ -95,14 +95,14 @@ function resetGame() {
 	correctTally = 0;
 	incorrectTally = 0;
 	unansweredTally = 0;
-	counter = 30;
+	counter = 10;
 	generateQuestions();
 	timerWrapper();
 }
 
 var openScreen;
 var gameHTML;
-var counter = 30;
+var counter = 10;
 var questionArray =
 	["What is Apple\'s most lucrative product of 2015?",
 		"Who invented the tablet?",
