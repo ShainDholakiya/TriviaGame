@@ -1,104 +1,147 @@
 $(document).ready(function () {
 
-//User clicks button to have the quiz application pop up using jquery
-$('button').click(function(){
-	$(this).hide();
-  
-  var correct;
-  var incorrect;
-  var unanswered;
-  var questionNumber;
-
-  
-  var myQuestions = [
-  //Question 1
-	{
-	  'answer': 'b',
-	  'question': 'What is Apple\'s most lucrative product of 2015?',
-	  'options': ['Iphone', 'Apple Watch', 'Ipad']
-  
-	},
-  
-  //Question 2  
-	{
-	  'answer': 'a',
-	  'question': 'Who invented the tablet?',
-	  'options': ['Microsoft', 'Google', 'Apple']
-  
-	},
-  
-  //Question 3
-	{
-	  'answer': 'b',
-	  'question': 'In 1999 who created the first mp3 phone?',
-	  'options': ['Toshiba', 'Samsung', 'Sony']
-  
-	},  
-  
-  //Question 4
-  {
-	'answer': 'a',
-	'question': 'Which tech company released The Walkman?',
-	'options': ['Sony', 'Samsung', 'Toshiba']
-  
-  },
-  
-  //Question 5
-  {
-	'answer': 'b',
-	'question': 'Which company created the "slide to unlock" on smartphones?',
-	'options': ['Apple', 'Microsoft', 'Google']
-  
-  },
-  
-  //Question 6
-  {
-	'answer': 'c',
-	'question': 'Who invented the holographic computer known as the HoloLens?',
-	'options': ['Google', 'Apple', 'Microsoft']
-  
-  },
-  
-  //Question 7
-  {
-	'answer': 'c',
-	'question': 'NAND Flash Memory was created by which tech company?',
-	'options': ['Sony', 'Samsung', 'Toshiba']
-  
-  },   
-  
-  //Question 8
-  {
-	'answer': 'b',
-	'question': 'Who first invented RDF Site Summary (RSS)?',
-	'options': ['Lycos', 'Netscape', 'Yahoo']
-  
-  },
-  
-  //Question 9
-  {
-	'answer': 'b',
-	'question': 'Which company released their TV Product first?',
-	'options': ['Roku', 'Apple TV', 'Chromecast']
-  
-  },  
-  
-  //Question 10
-  {
-	'answer': 'b',
-	'question': 'Who created the first Motion Controller?',
-	'options': ['Nintendo', 'Microsoft', 'Sony']
-  
-  }  
-  
-  ];
-
-function startGame(questions) {
-	for (var i = 0; i < questions.length; i++) {
-		$("#questions").append("<p>" + questions[i].question + "</p>");
-		}
+	function openingPage() {
+		openScreen = "<p class='text-center main-button-container'><a class='btn btn-warning btn-md btn-block start-button' href='#' role='button'>Start Quiz</a></p>";
+		$("#mainArea").append(openScreen);
 	}
-	startGame(myQuestions);
+
+	openingPage();
+
+	$("#mainArea").on("click", ".start-button", function (event) {
+		event.preventDefault();
+		$('.jumbotron').hide();
+		$('#top_banner').hide();
+		generateQuestions();
+		timerWrapper();
+	});
+
+	$("body").on("click", ".answer", function () {
+		selectedAnswer = $(this).text();
+		if (selectedAnswer === correctAnswers[questionCounter]) {
+			clearInterval(theClock);
+			generateWin();
+		}
+		else {
+			clearInterval(theClock);
+			generateLoss();
+		}
+	});
+
+	$("body").on("click", ".reset-button", function () {
+		resetGame();
+	});
 });
 
-});
+function timeoutLoss() {
+	unansweredTally++;
+	gameHTML = "<p class='text-center timer-p'>Time Remaining: <span class='timer'>" + counter + "</span></p>" + "<p class='text-center'>You ran out of time!  The correct answer was: " + correctAnswers[questionCounter] + "</p>";
+	$("#mainArea").html(gameHTML);
+	setTimeout(wait, 2000);
+}
+
+function generateWin() {
+	correctTally++;
+	gameHTML = "<p class='text-center timer-p'>Time Remaining: <span class='timer'>" + counter + "</span></p>" + "<p class='text-center'>Correct! The answer is: " + correctAnswers[questionCounter];
+	$("#mainArea").html(gameHTML);
+	setTimeout(wait, 2000);
+}
+
+function generateLoss() {
+	incorrectTally++;
+	gameHTML = "<p class='text-center timer-p'>Time Remaining: <span class='timer'>" + counter + "</span></p>" + "<p class='text-center'>Wrong! The correct answer is: " + correctAnswers[questionCounter] + "</p>";
+	$("#mainArea").html(gameHTML);
+	setTimeout(wait, 2000);
+}
+
+function generateQuestions() {
+	gameHTML = "<p class='text-center timer-p'>Time Remaining: <span class='timer'>30</span></p></p><p class='text-center'>" + questionArray[questionCounter] + "</p><p class='first-answer answer'>" + answerArray[questionCounter][0] + "</p><p class='answer'>" + answerArray[questionCounter][1] + "</p><p class='answer'>" + answerArray[questionCounter][2] + "</p>";
+	$("#mainArea").html(gameHTML);
+}
+
+function wait() {
+	if (questionCounter < 9) {
+		questionCounter++;
+		generateQuestions();
+		counter = 30;
+		timerWrapper();
+	}
+	else {
+		finalScreen();
+	}
+}
+
+function timerWrapper() {
+	theClock = setInterval(thirtySeconds, 3000);
+	function thirtySeconds() {
+		if (counter === 0) {
+			clearInterval(theClock);
+			timeoutLoss();
+		}
+		if (counter > 0) {
+			counter--;
+		}
+		$(".timer").html(counter);
+	}
+}
+
+function finalScreen() {
+	$('p.textcenter.timer-p').hide();
+	gameHTML = "<p class='text-center timer-p'>Time Remaining: <span class='timer'>" + counter + "</span></p>" + "<p class='text-center'>All done, here's how you did!" + "</p>" + "<p class='summary-correct'>Correct Answers: " + correctTally + "</p>" + "<p>Wrong Answers: " + incorrectTally + "</p>" + "<p>Unanswered: " + unansweredTally + "</p>" + "<p class='text-center reset-button-container'><a class='btn btn-warning btn-md btn-block reset-button' href='#' role='button'>Reset The Quiz!</a></p>";
+	$("#mainArea").html(gameHTML);
+}
+
+function resetGame() {
+	questionCounter = 0;
+	correctTally = 0;
+	incorrectTally = 0;
+	unansweredTally = 0;
+	counter = 30;
+	generateQuestions();
+	timerWrapper();
+}
+
+var openScreen;
+var gameHTML;
+var counter = 30;
+var questionArray =
+	["What is Apple\'s most lucrative product of 2015?",
+		"Who invented the tablet?",
+		"In 1999 who created the first mp3 phone?",
+		"Which tech company released The Walkman?",
+		"Which company created the 'slide to unlock' on smartphones?",
+		"Who invented the holographic computer known as the HoloLens?",
+		"NAND Flash Memory was created by which tech company?",
+		"Who first invented RDF Site Summary (RSS)?",
+		"Which company released their TV Product first?",
+		"Who created the first Motion Controller?"];
+
+var answerArray = [
+	['Iphone', 'Apple Watch', 'Ipad'],
+	['Microsoft', 'Google', 'Apple'],
+	['Toshiba', 'Samsung', 'Sony'],
+	['Sony', 'Samsung', 'Toshiba'],
+	['Apple', 'Microsoft', 'Google'],
+	['Google', 'Apple', 'Microsoft'],
+	['Sony', 'Samsung', 'Toshiba'],
+	['Lycos', 'Netscape', 'Yahoo'],
+	['Roku', 'Apple TV', 'Chromecast'],
+	['Nintendo', 'Microsoft', 'Sony']];
+
+var correctAnswers =
+	["Apple Watch",
+		"Microsoft",
+		"Samsung",
+		"Sony",
+		"Microsoft",
+		"Microsoft",
+		"Toshiba",
+		"Netscape",
+		"Apple TV",
+		"Microsoft"];
+
+var questionCounter = 0;
+var selecterAnswer;
+var theClock;
+var correctTally = 0;
+var incorrectTally = 0;
+var unansweredTally = 0;
