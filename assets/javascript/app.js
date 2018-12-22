@@ -71,7 +71,7 @@ function wait() {
 }
 
 function timerWrapper() {
-	theClock = setInterval(thirtySeconds, 3000);
+	theClock = setInterval(tenSeconds, 3000);
 	function thirtySeconds() {
 		if (counter === 0) {
 			clearInterval(theClock);
