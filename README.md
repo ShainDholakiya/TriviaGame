@@ -1,4 +1,7 @@
 # TriviaGame
+
+https://shaindholakiya.github.io/TriviaGame/
+
 # JavaScript Assignment 2
 
 ### Overview
